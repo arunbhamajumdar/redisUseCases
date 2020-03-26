@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -19,7 +20,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 public class PersistenceJPAConfig{
- 
+	
+	@Value("${spring.datasource.url}") private String dbUrl;
+	@Value("${spring.datasource.username}") private String dbUser;
+	@Value("${spring.datasource.password}") private String dbPsw;
+	@Value("${spring.datasource.driver-class-name}") private String dbDriverClass;
+	
    @Bean
    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
       LocalContainerEntityManagerFactoryBean em 
@@ -37,10 +43,10 @@ public class PersistenceJPAConfig{
    @Bean
    public DataSource dataSource(){
 	   DriverManagerDataSource dataSource = new DriverManagerDataSource();
-	   dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-	   dataSource.setUrl("jdbc:mysql://localhost:3306/spring_jpa");
-	   dataSource.setUsername( "tutorialuser" );
-	   dataSource.setPassword( "tutorialmy5ql" );
+	   dataSource.setDriverClassName(dbDriverClass);
+	   dataSource.setUrl(dbUrl);
+	   dataSource.setUsername(dbUser);
+	   dataSource.setPassword(dbPsw);
 	   return dataSource;
    }
  
