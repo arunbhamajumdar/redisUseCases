@@ -2,7 +2,11 @@ package com.mypoc.redishc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.redisson.api.MapOptions;
@@ -22,9 +26,9 @@ public class TestCachingStrategy {
 		Connection conn=null;
 		String sqlKey=null;
 		String sqlValue=null;
-		Supplier<String> ksupplier=null;
-		Consumer<PreparedStatement> params=null;
-		Supplier<String> vsupplier=null;
+		Function<ResultSet, String> ksupplier=null;
+		BiConsumer<PreparedStatement, String> params=null;
+		Function<ResultSet, String> vsupplier=null;
 		MapLoader<String, String> mapLoader = cstrategy.readThroughCache(conn, sqlKey, ksupplier, sqlValue, params, vsupplier);
 		MapOptions<String, String> options = MapOptions.<String, String>defaults()
                 .loader(mapLoader);
@@ -42,15 +46,15 @@ public class TestCachingStrategy {
 		CachingStrategy cstrategy = new CachingStrategy();
 		Connection conn=null;
 		String insertSql=null;
-		Consumer<PreparedStatement> kvParam=null;
+		BiConsumer<PreparedStatement, Entry<String,String>> kvParam=null;
 		String deleteSql=null;
-		Consumer<PreparedStatement> kParam=null;
-		MapWriter<K, V> mapWriter = cstrategy.writeThroughCache(conn, insertSql, kvParam, deleteSql, kParam);
-		MapOptions<K, V> options = MapOptions.<K, V>defaults()
+		BiConsumer<PreparedStatement, String> kParam=null;
+		MapWriter<String, String> mapWriter = cstrategy.writeThroughCache(conn, insertSql, kvParam, deleteSql, kParam);
+		MapOptions<String, String> options = MapOptions.<String, String>defaults()
                 .writer(mapWriter)
                 .writeMode(WriteMode.WRITE_THROUGH);
 		RedissonClient redisson = client.getRedisson();
-		RMap<K, V> map = redisson.getMap("test", options);
+		RMap<String, String> map = redisson.getMap("test", options);
 		//or
 		//RMapCache<K, V> map = redisson.getMapCache("test", options);
 		//or with boost up to 45x times 
@@ -75,19 +79,19 @@ public class TestCachingStrategy {
 		CachingStrategy cstrategy = new CachingStrategy();
 		Connection conn=null;
 		String insertSql=null;
-		Consumer<PreparedStatement> kvParam=null;
+		BiConsumer<PreparedStatement, Entry<String,String>> kvParam=null;
 		String deleteSql=null;
-		Consumer<PreparedStatement> kParam=null;
-		MapWriter<K, V> mapWriter = cstrategy.writeThroughCache(conn, insertSql, kvParam, deleteSql, kParam);
-		MapOptions<K, V> options = MapOptions.<K, V>defaults()
+		BiConsumer<PreparedStatement, String> kParam=null;
+		MapWriter<String, String> mapWriter = cstrategy.writeThroughCache(conn, insertSql, kvParam, deleteSql, kParam);
+		MapOptions<String, String> options = MapOptions.<String, String>defaults()
                 .writer(mapWriter)
                 .writeMode(WriteMode.WRITE_BEHIND)
                 .writeBehindDelay(5000)
                 .writeBehindBatchSize(100);
 		RedissonClient redisson = client.getRedisson();
-		RMap<K, V> map = redisson.getMap("test", options);
+		RMap<String, String> map = redisson.getMap("test", options);
 		//or
-		RMapCache<K, V> mapc = redisson.getMapCache("test", options);
+		RMapCache<String, String> mapc = redisson.getMapCache("test", options);
 		//or with boost up to 45x times 
 		//RLocalCachedMap<K, V> maplc = redisson.getLocalCachedMap("test", options);
 		//or with boost up to 45x times 
