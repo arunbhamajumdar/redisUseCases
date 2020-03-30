@@ -1,4 +1,4 @@
-create database ADJCLMO2;
+create database ADJCLMO2; 
 create database ARCHVEO2;
 create database BENADMO2;
 create database CLMACMO2;
