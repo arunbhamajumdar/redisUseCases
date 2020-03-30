@@ -1,0 +1,14 @@
+create database ADJCLMO2;
+create database ARCHVEO2;
+create database BENADMO2;
+create database CLMACMO2;
+create database CLMTRCO2;
+create database ENRLALLC;
+create database ENRLMTO2;
+create database FEPDSS;
+create database FEPENRL;
+create database FEPESERV;
+create database FEPREF;
+create database FEPRPTO2;
+create database FEVTPROD;
+create database PHIPDO2;

@@ -10,9 +10,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import org.redisson.api.map.MapLoader;
 import org.redisson.api.map.MapWriter;
 
@@ -31,10 +30,10 @@ public class CachingStrategy {
 	public <K,V> MapLoader<K, V> readThroughCache(
 			Connection conn, 
 			String sqlKey, 
-			Supplier<K> ksupplier, 				//result.getString(1)
+			Function<ResultSet, K> ksupplier, 				//result.getString(1)
 			String sqlValue,
-			Consumer<PreparedStatement> params,	// preparedStatement.setString(1, key);
-			Supplier<V> vsupplier 				//result.getString(1)
+			BiConsumer<PreparedStatement, K> params,	// preparedStatement.setString(1, key);
+			Function<ResultSet, V> vsupplier 				//result.getString(1)
 			) {
 		MapLoader<K, V> mapLoader = new MapLoader<K, V>() {
 		    @Override
@@ -43,7 +42,7 @@ public class CachingStrategy {
 		        try(Statement statement = conn.createStatement()) {
 		            ResultSet result = statement.executeQuery(sqlKey);
 		            while (result.next()) {
-		                list.add(ksupplier.get());
+		                list.add(ksupplier.apply(result));
 		            }
 		        } catch (SQLException e) {
 					e.printStackTrace();
@@ -53,10 +52,10 @@ public class CachingStrategy {
 		    @Override
 		    public V load(K key) {
 		        try(PreparedStatement preparedStatement = conn.prepareStatement(sqlValue)) {
-		        	params.accept(preparedStatement);		            
+		        	params.accept(preparedStatement, key);		            
 		            ResultSet result = preparedStatement.executeQuery();
 		            if (result.next()) {
-		                return vsupplier.get();
+		                return vsupplier.apply(result);
 		            }
 		        } catch (SQLException e) {
 					e.printStackTrace();
@@ -82,16 +81,16 @@ public class CachingStrategy {
 	 */
 	public <K,V> MapWriter<K, V> writeThroughCache(Connection conn,
 			String insertSql,			// "INSERT INTO student (id, name) values (?, ?)"
-			Consumer<PreparedStatement> kvParam,
+			BiConsumer<PreparedStatement, Entry<K, V>> kvParam,
 			String deleteSql,
-			Consumer<PreparedStatement> kParam
+			BiConsumer<PreparedStatement, K> kParam
 			) {
 		MapWriter<K, V> mapWriter = new MapWriter<K, V>() {
 		    @Override
 		    public void write(Map<K, V> map) {
 		        try(PreparedStatement preparedStatement = conn.prepareStatement(insertSql)) {
 		            for (Entry<K, V> entry : map.entrySet()) {
-		            	kvParam.accept(preparedStatement);
+		            	kvParam.accept(preparedStatement, entry);
 		                //preparedStatement.setString(1, entry.getKey());
 		                //preparedStatement.setString(2, entry.getValue());
 		                preparedStatement.addBatch();
@@ -105,7 +104,7 @@ public class CachingStrategy {
 		    public void delete(Collection<K> keys) {
 		        try(PreparedStatement preparedStatement = conn.prepareStatement(deleteSql)) {
 		            for (K key : keys) {
-		            	kParam.accept(preparedStatement);
+		            	kParam.accept(preparedStatement, key);
 		                //preparedStatement.setString(1, key);
 		                preparedStatement.addBatch();
 		            }
