@@ -31,7 +31,7 @@ public class PersistenceJPAConfig{
       LocalContainerEntityManagerFactoryBean em 
         = new LocalContainerEntityManagerFactoryBean();
       em.setDataSource(dataSource());
-      em.setPackagesToScan(new String[] { "com.baeldung.persistence.model" });
+      em.setPackagesToScan(new String[] { "com.mypoc.model" });
  
       JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
       em.setJpaVendorAdapter(vendorAdapter);
