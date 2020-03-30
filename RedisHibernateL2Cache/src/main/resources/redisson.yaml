@@ -8,7 +8,7 @@ clusterServersConfig:
   failedSlaveCheckInterval: 60000
   password: null
   subscriptionsPerConnection: 5
-  clientName: null
+  clientName: RedissonTest
   loadBalancer: !<org.redisson.connection.balancer.RoundRobinLoadBalancer> {}
   subscriptionConnectionMinimumIdleSize: 1
   subscriptionConnectionPoolSize: 50
@@ -19,9 +19,12 @@ clusterServersConfig:
   readMode: "SLAVE"
   subscriptionMode: "SLAVE"
   nodeAddresses:
-  - "redis://127.0.0.1:7004"
-  - "redis://127.0.0.1:7001"
-  - "redis://127.0.0.1:7000"
+  - "redis://192.168.1.117:7001"
+  - "redis://192.168.1.117:7002"
+  - "redis://192.168.1.117:7003"
+  - "redis://192.168.1.117:7004"
+  - "redis://192.168.1.117:7005"
+  - "redis://192.168.1.117:7006"
   scanInterval: 1000
   pingConnectionInterval: 0
   keepAlive: false
