@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.6.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.fepoc</groupId>
+	<artifactId>AppClientConnector</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>AppClientConnector</name>
+	<description>This projects implements connector features for Application Client</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+    	<netty.tcnative.version>2.0.30.Final</netty.tcnative.version>
+    	<grpc.version>1.28.1</grpc.version>
+    	<protoc.version>3.11.4</protoc.version>
+    	<clearOutputDirectory>false</clearOutputDirectory>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.grpc/grpc-protobuf -->
+		<dependency>
+		    <groupId>io.grpc</groupId>
+		    <artifactId>grpc-protobuf</artifactId>
+	      	<version>${grpc.version}</version>
+	      	<classifier></classifier>	      	
+		</dependency>
+	    <dependency>
+	      <groupId>io.grpc</groupId>
+	      <artifactId>grpc-stub</artifactId>
+	      <version>${grpc.version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>javax.annotation</groupId>
+	      <artifactId>javax.annotation-api</artifactId>
+	      <scope>provided</scope> <!-- not needed at runtime -->
+	    </dependency>
+	    <dependency>
+	      <groupId>io.grpc</groupId>
+	      <artifactId>grpc-netty</artifactId>
+	      <version>${grpc.version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>io.netty</groupId>
+	      <artifactId>netty-tcnative-boringssl-static</artifactId>
+	      <scope>runtime</scope>
+	    </dependency>
+	    
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.1</version>
+            </extension>
+		</extensions>
+		<plugins>
+	      <plugin>
+	        <groupId>org.xolstice.maven.plugins</groupId>
+	        <artifactId>protobuf-maven-plugin</artifactId>
+	        <version>0.6.1</version>
+	        <configuration>
+	          <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}</protocArtifact>
+	          <pluginId>grpc-java</pluginId>
+	          <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact>
+	        </configuration>
+	        <executions>
+	          <execution>
+	            <goals>
+	              <goal>compile</goal>
+	              <goal>compile-custom</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	      </plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-enforcer-plugin</artifactId>
+	        <executions>
+	          <execution>
+	            <id>enforce</id>
+	            <goals>
+	              <goal>enforce</goal>
+	            </goals>
+	            <configuration>
+	              <rules>
+	                <requireUpperBoundDeps/>
+	              </rules>
+	            </configuration>
+	          </execution>
+	        </executions>
+	      </plugin>	
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>	      
+	     </plugins>	    
+	</build>
+
+</project>
