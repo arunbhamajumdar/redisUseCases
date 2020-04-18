@@ -40,13 +40,17 @@
 			<artifactId>AppClientMaster</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>pom</type>
-			<scope></scope>
+		</dependency>
+		<dependency>
+			<groupId>com.fepoc</groupId>
+			<artifactId>AppClientConnector</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fepoc</groupId>
 			<artifactId>AppClientCore</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency> 
+		</dependency>
 	</dependencies>
 
 	<build>
