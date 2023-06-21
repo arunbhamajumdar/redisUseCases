@@ -21,18 +21,39 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
+	
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>io.lettuce</groupId>
+					<artifactId>lettuce-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+<!-- https://mvnrepository.com/artifact/io.lettuce/lettuce-core -->
+		
 		<!-- https://mvnrepository.com/artifact/io.lettuce/lettuce-core -->
 		<dependency>
 		    <groupId>io.lettuce</groupId>
 		    <artifactId>lettuce-core</artifactId>
+			<version>6.0.1.RELEASE</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter -->
 		<dependency>
 		    <groupId>org.redisson</groupId>
 		    <artifactId>redisson-spring-boot-starter</artifactId>
 		    <version>3.12.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.esotericsoftware/kryo -->
+		<dependency>
+		    <groupId>com.esotericsoftware</groupId>
+		    <artifactId>kryo</artifactId>
+		    <version>5.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -23,22 +23,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
-	        <exclusions>
-	            <!-- Exclude the Tomcat dependency -->
-	            <exclusion>
-	                <groupId>org.springframework.boot</groupId>
-	                <artifactId>spring-boot-starter-tomcat</artifactId>
-	            </exclusion>
-	        </exclusions>			
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-
 
 		<!-- https://mvnrepository.com/artifact/io.grpc/grpc-protobuf -->
 		<dependency>
@@ -67,17 +51,6 @@
 	      <scope>runtime</scope>
 	    </dependency>
     
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -89,10 +62,14 @@
 <!--             </extension> -->
 <!-- 		</extensions> -->
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+	      <plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.8.0</version>
+	        <configuration>
+	          <source>1.8</source>
+	          <target>1.8</target>
+	        </configuration>
+	      </plugin>
 <!-- 	      <plugin> -->
 <!-- 	        <groupId>org.xolstice.maven.plugins</groupId> -->
 <!-- 	        <artifactId>protobuf-maven-plugin</artifactId> -->

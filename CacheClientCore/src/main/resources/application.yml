@@ -1,0 +1,22 @@
+debug: false
+trace: false
+spring:
+  profiles:
+    active: EnterpriseRedis
+  redis:
+    redisson:
+      config: classpath:redisson.yml
+    host: 192.168.1.109
+    port: 8443
+    cluster:
+      nodes: 192.168.1.109:8443
+    lettuce:
+      shutdown-timeout: 30000
+      pool:
+        max-active: 30
+        max-idle: 8
+        min-idle: 0
+cluster:
+    urls2: 192.168.1.113:8443,192.168.1.113:10443
+    urls: 192.168.1.149:7001,192.168.1.149:7002,192.168.1.149:7003,192.168.1.149:7004,192.168.1.149:7005,192.168.1.149:7006
+

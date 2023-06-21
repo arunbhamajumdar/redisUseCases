@@ -1,0 +1,5 @@
+package com.fepoc.vf.jsr303;
+
+public interface PartialValidation {
+
+}
